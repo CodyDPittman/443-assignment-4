@@ -16,6 +16,7 @@
 #include <QBuffer>
 #include <QDataStream>
 #include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QUdpSocket>
 
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +33,7 @@ public:
 
 
     QTcpSocket *socket;
-
+    QString file1, file2;
     void initSocket();
 
 private slots:
@@ -43,6 +44,10 @@ private slots:
     // Overlay photo
     void on_pushButton_2_clicked();
 
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
 
 private:
     Ui::MainWindow *ui;
