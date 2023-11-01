@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 void MainWindow::initSocket()
 {
     socket = new QTcpSocket(this);
-    socket->connectToHost("100.69.238.176", 80);
+    socket->connectToHost("100.69.238.174", 80);
 }
 
 // Reading and loading user selected image
@@ -69,27 +69,33 @@ void MainWindow::on_pushButton_3_clicked()
 
     // Create a QImage of the recently displayed bitmap
     QImage image(file1);
+    quint32 size;
 
-    // Creating a byte array from the QImage object
+    // Creating a raw data byte array from the QImage object
     QByteArray arr = QByteArray::fromRawData((const char*)image.bits(), image.byteCount());
     QBuffer buffer(&arr);
 
-    // Creating a buffer from the byte array
-    //image.save(&buffer, "BMP");
-    //buffer.setBuffer(&arr);
-    //buffer.open(QIODevice::ReadOnly);
+    // Creating a base 64 byte array copy
+    //QString s = arr.toBase64();
+    //qDebug() << s;
+    //arr.toBase64();
 
+    //qDebug() << image.byteCount();
 
     // Sending data to the server
     if(socket->state() == QAbstractSocket::ConnectedState)
     {
         qDebug() << "Connected!";
-        socket->write(arr);
-        //socket->waitForBytesWritten();
+
+
+        socket->write(arr.toBase64());
+        socket->flush();
+        socket->waitForBytesWritten(3000);
+
+        //socket->close();
     }
     else
         qDebug() << "Not connected";
-
 
 }
 
