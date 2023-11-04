@@ -34,6 +34,12 @@ public:
 
     QTcpSocket *socket;
     QString file1, file2;
+
+    QByteArray Data = QByteArray("0000",4);
+
+    QImage changeBrightness(QImage &image, int factor);
+    QImage changeContrast(QImage &image, int factor);
+
     void initSocket();
 
 private slots:
@@ -48,6 +54,10 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_4_clicked();
+
+    void on_horizontalSlider_valueChanged(int value);
+
+    void on_horizontalSlider_2_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
