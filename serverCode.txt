@@ -1,25 +1,43 @@
 import socket
 import base64
 import sys
+import Image
+import cv2
+import io
+from PIL import Image
 
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
 
 # TCP Server Info
-TCP_IP = "100.69.238.176"
+TCP_IP = "100.69.238.172"
 TCP_PORT = 80
 server_address = (TCP_IP, TCP_PORT)
 
 # Creating TCP/IP Socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind((TCP_IP, TCP_PORT))
-
-# TCP Server Listener
 sock.listen(1)
 
+connection, addr = sock.accept()
+
+
 print("READY")
-while True:
-        # Recieve data here
-        connection, addr = sock.accept()
-        data = connection.recv(1024)
-        base64.b64decode(data)
+
+file = open('original_image.jpg', 'wb')
+data = connection.recv(2048)
+#imgdata = base64.b64decode(data)
+
+# While we are continously recieving data
+while data:
+        file.write(data)
+        data = connection.recv(2048)
+        #imgdata = base64.b64decode(data)
+        print("Recieving data..")
+
+print("Done recieving")
+with open('original_image.jpg', 'rb') as f:
+        data = bytearray(f.read())
+
+file.close()
+connection.close()
